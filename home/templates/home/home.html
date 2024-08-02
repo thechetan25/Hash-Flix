@@ -1,0 +1,273 @@
+<!-- templates/home/your_template.html -->
+{% include "layout.html" %}
+{% load static %}
+{% load custom_filters %}
+
+
+{% block head %}
+<title>Home page</title>
+<link rel="stylesheet" href="{% static "home/home.css" %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lobster&family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5/6MBzMl6E61uUjOLt7QsUe10t7j6gDC/e4gxC5X" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<!-- owl carousel -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+{% endblock %}
+
+{% block body %}
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container-fluid">
+    <div class="navbar-brand">#Flix</div>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item ms-4">
+          <a class="nav-link nav-link-underline active disabled" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item ms-4">
+          <a class="nav-link nav-link-underline" href="{% url 'movie-page'%}">Movies</a>
+        </li>
+        <li class="nav-item ms-4">
+          <a class="nav-link nav-link-underline" href="{% url 'tvshows-page'%}">Tv Shows</a>
+        </li>
+        <li class="nav-item ms-4">
+          <a class="nav-link nav-link-underline" href="{% url 'news-homepage'%}">News</a>
+        </li>
+      </ul>
+      <form class="d-flex me-5" role="search" action="{% url 'search' %}" method="GET">
+        <input class="form-control searchf" type="search" placeholder="Search Movies" aria-label="Search" name="query">
+        <button class="btn btn-warning search" type="submit"><i class="bi bi-search"></i></button>
+      </form>
+      <li class="nav-item dropstart me-2 d-flex align-items-center">
+        <a class="nav-link dropdown-toggle dropdown-toggle-white d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-person-fill"></i>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Watchlist</a></li>
+          <li><a class="dropdown-item" href="#">Settings</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#">Logout</a></li>
+        </ul>
+      </li>
+    </div>
+  </div>
+</nav>
+
+
+<div id="carouselExampleSlidesOnly" class="carousel slide carousel-fade" data-bs-ride="carousel" id="carousel">
+  <div class="carou-wrap">
+    <div class="carousel-inner">      
+      {% for i in resp%}
+      <div class="carousel-item {% if forloop.first %}active{% endif %}" id="topcar">
+        <div class="carousel-img-wrapper">
+          <img id="bground" src="https://image.tmdb.org/t/p/original/{{i.backdrop_path}}" class="d-block" alt="{{i.original_title}}">
+          <div class="gradient-overlay"></div>
+      </div>
+        <div class="row car_cont" id="car_cont">
+          <img id="poster_img" src="https://image.tmdb.org/t/p/original/{{i.logo}}" class="d-block" alt="{{test.original_title}}">
+          <div class="col-12" id="cont">
+             <div class="row dtitle" id="dtitle">
+              <h4 class="dynamic-font">
+                {% if i.title %}
+                {{i.title}}
+                {% elif i.name %}
+                {{i.name}}
+                {% endif %}
+              </h4>
+             </div>
+             <hr>
+             <div class="row" id="dovr">
+              <p id="ovr">{{i.overview}}</p>
+              {% for j in i.genre_ids%}
+              <div class="col-auto" id="genre">
+                <p class="genre-item">{{ genres|get_item:j }}</p>
+              </div>
+              {% endfor %}
+             </div>
+          </div>
+        </div>
+        <div id="crd" class="row crd">
+          <div id="play" class="col-auto">
+           <a href="{% url 'movie-detail' i.media_type i.id %}"><button class="btn"><i class="bi bi-info-circle"></i>&nbsp;More Info</button></a>  
+          </div>
+          <div class="col-auto" id="imdb">
+            <a href="https://www.imdb.com" target="_blank">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/IMDB_Logo_2016.svg" alt="IMDb" class="imdb-sticker"></a>
+              <span id="rating">{{i.vote_average|round_number}}<i class="bi bi-star-fill"></i></span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="indi">
+      {% for i in resp%}
+      <img src="https://image.tmdb.org/t/p/original/{{i.poster_path}}" alt="{{i.original_title}}"
+      data-bs-target="#carouselExampleSlidesOnly" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %} class="activef" {% endif%}>
+      {% endfor%}
+    </div>
+  </div>
+</div>
+
+{<div id="top_rated">
+<h4 id="cat_head">Hot on Flix</h4>
+<div class="owl-carousel owl-theme">
+  {% for i in top%}
+  <div class="item">
+      <img data-src="https://image.tmdb.org/t/p/original/{{i.poster_path}}" class="d-block owl-lazy" alt="{{i.original_title}}">
+      <div class="item-detail">
+       <p>
+        {{i.title}}
+       </p> 
+      </div>
+  </div>
+  {% endfor %}
+</div>
+<button class="btn btn-warning custom-nav owl-prev"><i class="bi bi-arrow-left-circle-fill"></i></button>
+<button class="btn btn-warning custom-nav owl-next"><i class="bi bi-arrow-right-circle-fill"></i></button>
+</div> 
+
+<div id="week_popular">
+  <h4 id="cat_head">Popular this week</h4>
+  <div class="owl-carousel owl-theme">
+    {% for i in wpop%}
+    <div class="item">
+      <img data-src="https://image.tmdb.org/t/p/original/{{i.poster_path}}" class="d-block owl-lazy" alt="{{i.original_title}}">
+      <div class="item-detail">
+        <p>
+         {{i.title}}
+        </p> 
+       </div>
+    </div>
+    {% endfor %}
+  </div>
+  <button class="btn btn-warning custom-nav owl-prev"><i class="bi bi-arrow-left-circle-fill"></i></button>
+  <button class="btn btn-warning custom-nav owl-next"><i class="bi bi-arrow-right-circle-fill"></i></button>
+</div>
+
+<div id="upcomming">
+  <h4 id="cat_head">Upcomming Movies</h4>
+  <div class="owl-carousel owl-theme">
+    {% for i in up%}
+    <div class="item">
+      <img data-src="https://image.tmdb.org/t/p/original/{{i.poster_path}}" class="d-block owl-lazy" alt="{{i.original_title}}">
+      <div class="item-detail">
+        <p>
+         {{i.title}}
+        </p> 
+       </div>
+    </div>
+    {% endfor %}
+  </div>
+  <button class="btn btn-warning custom-nav owl-prev"><i class="bi bi-arrow-left-circle-fill"></i></button>
+  <button class="btn btn-warning custom-nav owl-next"><i class="bi bi-arrow-right-circle-fill"></i></button>
+</div>
+
+<div id="people">
+  <h4 id="cat_head">Popular Personalities</h4>
+  <div class="owl-carousel owl-theme">
+    {% for i in people %}
+    <div class="item">
+      <img data-src="https://image.tmdb.org/t/p/original/{{i.profile_path}}" class="d-block owl-lazy" alt="{{i.original_name}}">
+      <div class="item-detail">
+        <p>
+         {{i.name}}
+        </p> 
+       </div>
+    </div>
+    {% endfor %}
+  </div>
+  <button class="btn btn-warning custom-nav owl-prev"><i class="bi bi-arrow-left-circle-fill"></i></button>
+  <button class="btn btn-warning custom-nav owl-next"><i class="bi bi-arrow-right-circle-fill"></i></button>
+</div>
+
+<div id="top_tv">
+  <h4 id="cat_head">Top Rated TV Shows</h4>
+  <div class="owl-carousel owl-theme">
+    {% for i in tv_top%}
+    <div class="item">
+      <img data-src="https://image.tmdb.org/t/p/original/{{i.poster_path}}" class="d-block owl-lazy" alt="{{i.original_name}}">
+      <div class="item-detail">
+        <p>
+         {{i.name}}
+        </p> 
+       </div>
+    </div>
+    {% endfor %}
+  </div>
+  <button class="btn btn-warning custom-nav owl-prev"><i class="bi bi-arrow-left-circle-fill"></i></button>
+  <button class="btn btn-warning custom-nav owl-next"><i class="bi bi-arrow-right-circle-fill"></i></button>
+</div>
+
+<div id="all_trend">
+  <h4 id="cat_head">Trending Today</h4>
+  <div class="owl-carousel owl-theme">
+    {% for i in all_trend%}
+    <div class="item">
+      <img data-src="https://image.tmdb.org/t/p/original/{{i.poster_path}}" class="d-block owl-lazy" alt="{{i.original_name}}">
+      <div class="item-detail">
+        <p>
+         {% if i.title%}
+          {{i.title}}
+         {% elif i.name%}
+          {{i.name}}
+         {% endif %}
+        </p> 
+       </div>
+    </div>
+    {% endfor %}
+  </div>
+  <button class="btn btn-warning custom-nav owl-prev"><i class="bi bi-arrow-left-circle-fill"></i></button>
+  <button class="btn btn-warning custom-nav owl-next"><i class="bi bi-arrow-right-circle-fill"></i></button>
+</div>
+
+<div id="pop_show">
+  <h4 id="cat_head">Popular Tv Shows on Flix</h4>
+  <div class="owl-carousel owl-theme">
+    {% for i in pop_shows %}
+    <div class="item">
+      <img data-src="https://image.tmdb.org/t/p/original/{{i.poster_path}}" class="d-block owl-lazy" alt="{{i.original_name}}">
+      <div class="item-detail">
+        <p>
+         {{i.name}}
+        </p> 
+       </div>
+    </div>
+    {% endfor %}
+  </div>
+  <button class="btn btn-warning custom-nav owl-prev"><i class="bi bi-arrow-left-circle-fill"></i></button>
+  <button class="btn btn-warning custom-nav owl-next"><i class="bi bi-arrow-right-circle-fill"></i></button>
+</div>
+
+
+<div id="footer" class="row">
+    <div class="col-12" id="fot">
+      <hr>
+      <h4>Connect with me?</h4>
+      <p>@Chetan Ravipati</p>
+      <div id="icons">
+        <a href="#"><i class="bi bi-facebook"></i></a>
+        <a href="#"><i class="bi bi-instagram"></i></a>
+        <a href="#"><i class="bi bi-linkedin"></i></a>
+        <a href="#"><i class="bi bi-twitter-x"></i></a>
+        <a href="#"><i class="bi bi-github"></i></a>
+      </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5/6MBzMl6E61uUjOLt7QsUe10t7j6gDC/e4gxC5X" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.0/lazysizes.min.js" async></script>
+<script src="{% static "home/home.js" %}"></script>
+ 
+{% endblock %}

@@ -1,0 +1,361 @@
+<!-- templates/home/your_template.html -->
+{% include "layout.html" %}
+{% load static %}
+{% load custom_filters %}
+
+
+{% block head %}
+<title>{{test.title}}</title>
+<link rel="stylesheet" href="{% static "movies/movie_view.css" %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lobster&family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&display=swap" rel="stylesheet">
+<!-- owl carousel -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+<style>
+  #main-content{
+    background-image: url('https://image.tmdb.org/t/p/original/{{test.backdrop_path}}');
+    width: 100%;
+    object-fit: cover;
+    position: relative;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container-fluid">
+    <div class="navbar-brand">#Flix</div>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item ms-4">
+          <a class="nav-link nav-link-underline" href="{% url 'homepage'%}">Home</a>
+        </li>
+        <li class="nav-item ms-4">
+          <a class="nav-link nav-link-underline" href="{% url 'movie-page'%}">Movies</a>
+        </li>
+        <li class="nav-item ms-4">
+          <a class="nav-link nav-link-underline" href="{% url 'tvshows-page'%}">Tv Shows</a>
+        </li>
+        <li class="nav-item ms-4">
+          <a class="nav-link nav-link-underline">News</a>
+        </li>
+      </ul>
+      <form class="d-flex me-5" role="search" action="{% url 'search' %}" method="GET">
+        <input class="form-control searchf" type="search" placeholder="Search Movies" aria-label="Search" name="query">
+        <button class="btn btn-warning search" type="submit"><i class="bi bi-search"></i></button>
+      </form>
+    
+      <li class="nav-item dropstart me-2 d-flex align-items-center">
+        <a class="nav-link dropdown-toggle dropdown-toggle-white d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-person-fill"></i>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Watchlist</a></li>
+          <li><a class="dropdown-item" href="#">Settings</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#">Logout</a></li>
+        </ul>
+      </li>
+    </div>
+  </div>
+</nav>
+
+<section id="main-content">
+  <div class="blurry-overlay"></div>
+  <div class="content">
+    <section id="title" class="container">
+      <div id="first">
+        <h2 id="content-title">
+          {{test.title}}
+        </h2>
+        <div id="content-tags">
+          <span class="title-items">
+            Movie
+          </span>
+          <span class="title-items">
+            {{test.release_date|released_year}}
+          </span>
+          <span class="title-items">
+            {{test.runtime}}min
+          </span>
+          <span class="title-items">
+            {% if test.vote_average == 0 %}
+            <span id="rating">N/R&nbsp;<i class="bi bi-star-fill"></i></span>
+            {% else %}
+            <span id="rating">{{test.vote_average|round_number}}&nbsp;<i class="bi bi-star-fill"></i></span>
+            {% endif %}
+          </span>
+        </div>
+      </div>
+      <div class="providers">
+       {% for i in providers %}
+       <span id="ott">
+         <img id="provider-logo" src="https://image.tmdb.org/t/p/original/{{i.logo_path}}" alt="{{i.provider_name}}">
+       </span>
+       {% endfor %}
+      </div>
+    </section>
+    
+    <section id="Poster" class="container">
+        <div class="row">
+          <div class="col-auto" id="pimg">
+            <img id="bground" src="https://image.tmdb.org/t/p/original/{{test.poster_path}}" class="d-block" alt="{{test.original_title}}">
+          </div>
+          <div class="col" id="player-container">
+            <div id="player"></div>
+          </div>
+        </div>
+    </section>
+
+    <section id="overview" class="container">
+      <hr>
+      <div class="row">
+        <div class="col-12 overview-item">
+          {% for j in test.genres %}
+          <span class="genre-items">{{j.name }}</span>
+          {% endfor %}
+         </div>
+        <div class="col-12 overview-item">
+         {{test.overview}}
+        </div>
+        {% if director %}
+        <div class="col-12 overview-item">
+          <div class="col-auto sub-head">
+            Director
+          </div>
+          <div class="col sub-ans">
+            <a href="#">{{director.name}}</a>
+          </div>
+        </div>
+        {% endif %}
+        <div class="col-12 overview-item">
+          <div class="col-auto sub-head">
+            Stars
+          </div>
+          <div class="col sub-ans">
+            {% for i in actors%}
+            <a href="#">{{i.name}}&nbsp;&nbsp;</a>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="col-12 overview-item">
+          <div class="col-auto sub-head">
+            Release Date
+          </div>
+          <div class="col sub-ans">
+            {{release}}
+          </div>
+        </div>
+        <div class="col-12 overview-item">
+          <div class="col-auto sub-head">
+            Produced in
+          </div>
+          <div class="col sub-ans">
+            {% for i in test.production_countries%}
+            <a href="#">{{i.name}}&nbsp;&nbsp;</a>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="col-12 overview-item production">
+          {% for i in test.production_companies%}
+          {% if i.logo_path != null %}
+          <span id="ott">
+            <img id="production-logo" src="https://image.tmdb.org/t/p/original/{{i.logo_path}}" alt="{{i.name}}">
+          </span>
+          {% endif %}
+          {% endfor %}
+        </div>
+        <hr class="over-divider">
+      </div>
+    </section>
+
+    {% if collection %}
+    <section id="col" class="container">
+      <h4 id="cat_head">The {{collection.name}}</h4>
+      <div class="owl-carousel owl-theme">
+        {% for i in collection.parts %}
+        <a href="{% url 'movie-detail' 'movie' i.id %}">
+          <div class="item">
+            {% if i.poster_path == null %}
+            <img data-src="https://incakoala.github.io/top9movie/film-poster-placeholder.png" class="d-block owl-lazy" alt="{{i.original_title}}">
+            {% else %}
+            <img data-src="https://image.tmdb.org/t/p/original/{{i.poster_path}}" class="d-block owl-lazy" alt="{{i.original_title}}">
+            {% endif %}
+            <div class="item-detail recomend-detail">
+             <p>
+              {{i.title}}
+             </p> 
+            </div>
+        </div>
+        </a>
+        {% endfor %}
+      </div>
+      <button class="btn btn-warning custom-nav owl-prev"><i class="bi bi-arrow-left-circle-fill"></i></button>
+      <button class="btn btn-warning custom-nav owl-next"><i class="bi bi-arrow-right-circle-fill"></i></button>
+    </section>
+    {% endif %}
+
+    <section id="cast" class="container">
+      <h4 id="cat_head">Cast</h4>
+      <div class="owl-carousel owl-theme">
+        {% for i in cast%}
+        <a href="{% url 'person-detail' i.id %}">
+          <div class="item">
+            {% if i.profile_path == null %}
+            <img data-src="https://yagp.org/misc/Images/judges_b&w/Brittany%20O'Connor.jpg" class="d-block owl-lazy" alt="Default User Picture">
+            {% else %}
+            <img data-src="https://image.tmdb.org/t/p/original/{{i.profile_path}}" class="d-block owl-lazy" alt="{{i.original_title}}">
+            {% endif %}
+            <div class="item-detail">
+              <p>{{i.name}}</p>
+              <p id="sub-text">{{i.character}}</p>
+            </div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      <button class="btn btn-warning custom-nav owl-prev"><i class="bi bi-arrow-left-circle-fill"></i></button>
+      <button class="btn btn-warning custom-nav owl-next"><i class="bi bi-arrow-right-circle-fill"></i></button>
+    </section>
+
+    <section id="crew" class="container">
+      <h4 id="cat_head">Crew</h4>
+      <div class="owl-carousel owl-theme">
+        {% for i in crew%}
+        <a href="{% url 'person-detail' i.id %}">
+          <div class="item">
+            {% if i.profile_path == null %}
+            <img data-src="https://yagp.org/misc/Images/judges_b&w/Brittany%20O'Connor.jpg" class="d-block owl-lazy" alt="Default User Picture">
+            {% else %}
+            <img data-src="https://image.tmdb.org/t/p/original/{{i.profile_path}}" class="d-block owl-lazy" alt="{{i.original_title}}">
+            {% endif %}
+            <div class="item-detail">
+              <p>
+              {{i.name}}
+              </p> 
+              <p id="sub-text">{{i.job}}</p>
+            </div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+      <button class="btn btn-warning custom-nav owl-prev"><i class="bi bi-arrow-left-circle-fill"></i></button>
+      <button class="btn btn-warning custom-nav owl-next"><i class="bi bi-arrow-right-circle-fill"></i></button>
+      <hr class="over-divider">
+    </section>
+  
+    <section id="videos" class="container">
+      <h4 id="cat_head">Videos</h4>
+      <div class="owl-carousel owl-theme">
+        {% for i in videos%}
+          <div class="item vid">
+            <iframe src="https://www.youtube.com/embed/{{i.key}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        {% endfor %}
+      </div>
+      <button class="btn btn-warning custom-nav owl-prev"><i class="bi bi-arrow-left-circle-fill"></i></button>
+      <button class="btn btn-warning custom-nav owl-next"><i class="bi bi-arrow-right-circle-fill"></i></button>
+    </section>
+
+    {% if recomendations %}
+    <section id="Recomendations" class="container">
+      <h4 id="cat_head">you may like</h4>
+      <div class="owl-carousel owl-theme">
+        {% for i in recomendations%}
+        <a href="{% url 'movie-detail' 'movie' i.id %}">
+          <div class="item">
+            <img data-src="https://image.tmdb.org/t/p/original/{{i.poster_path}}" class="d-block owl-lazy" alt="{{i.original_title}}">
+            <div class="item-detail recomend-detail">
+             <p>
+              {{i.title}}
+             </p> 
+            </div>
+        </div>
+        </a>
+        {% endfor %}
+      </div>
+      <button class="btn btn-warning custom-nav owl-prev"><i class="bi bi-arrow-left-circle-fill"></i></button>
+      <button class="btn btn-warning custom-nav owl-next"><i class="bi bi-arrow-right-circle-fill"></i></button>
+    </section>
+    {% endif %}
+  </div>
+</section>
+
+<div id="footer" class="row">
+    <div class="col-12" id="fot">
+      <hr>
+      <h4>Connect with me?</h4>
+      <p>@Chetan Ravipati</p>
+      <div id="icons">
+        <a href="#"><i class="bi bi-facebook"></i></a>
+        <a href="#"><i class="bi bi-instagram"></i></a>
+        <a href="#"><i class="bi bi-linkedin"></i></a>
+        <a href="#"><i class="bi bi-twitter-x"></i></a>
+        <a href="#"><i class="bi bi-github"></i></a>
+      </div>
+    </div>
+</div> 
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script src="{% static "movies/movie_view.js" %}"></script>
+
+<script>
+  function loadYouTubeAPI() {
+      var tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  }
+
+  var player;
+  function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+          videoId: '{{key}}',  
+          playerVars: {
+              'playsinline': 1,
+              'rel':0,
+              'showinfo':0,
+              'iv_load_policy':3,
+              'modestbranding':1,
+              'controls':1,
+              'autoplay':0
+          },
+          events: {
+              'onReady': onPlayerReady,
+              'onStateChange': onPlayerStateChange
+          }
+      });
+  }
+
+  function onPlayerReady(event) {
+      event.target.playVideo();
+  }
+
+  function onPlayerStateChange(event) {
+      if (event.data == YT.PlayerState.PLAYING) {
+          console.log('Video is playing');
+      }
+  }
+
+  // Load the YouTube API after the DOM is ready
+  document.addEventListener("DOMContentLoaded", function() {
+      loadYouTubeAPI();
+  });
+</script>
+
+{% endblock %}

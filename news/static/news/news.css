@@ -1,0 +1,330 @@
+/* General Styles */
+body {
+    background-color: white;
+}
+
+.navbar {
+    background-color: black;
+    z-index: 10;
+    position: sticky;
+    top: 0;
+    width: 100%;
+}
+
+.navbar-brand {
+    font-family: "Lobster", sans-serif;
+    font-size: xx-large;
+    color: yellow;
+}
+
+.navbar-brand:hover {
+    color: red;
+}
+
+.nav-link {
+    color: white;
+    font-size: 18px;
+    font-family: "Sarabun", sans-serif;
+    font-weight: 400;
+}
+
+.search {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    background-color: yellow;
+    border: none;
+    outline: none;
+  }
+  
+  .search :hover {
+    background-color: rgb(186, 186, 0);
+    outline: none;
+  }
+  
+  .searchf {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  
+  .dropdown-toggle-white {
+    background-color: yellow;
+    color: black;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+    margin-bottom: auto;
+    margin-top: auto;
+    align-self: center;
+  }
+  
+  .dropdown-toggle-white:hover,
+  .dropdown-toggle-white:focus {
+    background-color: yellow;
+    color: black;
+  }
+  
+  .nav-link-underline {
+    position: relative;
+  }
+  
+  .nav-link-underline::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    display: block;
+    margin-top: 5px;
+    right: 0;
+    background: yellow;
+    transition: width 0.3s ease;
+    -webkit-transition: width 0.3s ease;
+  }
+  
+  .nav-link-underline:hover::after,
+  .nav-link-underline:focus::after,
+  .active::after {
+    width: 100%;
+    left: 0;
+    background: yellow; /* Set the underline color */
+  }
+  
+
+/* Card Styles */
+#cat_head {
+    color: black;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 30px;
+    margin-top: 4vh;
+    margin-bottom: 2vh;
+}
+
+#articles {
+    margin-top: 30px;
+}
+
+.card {
+    background-color: black;
+    border: 1px solid yellow;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    max-height: 400px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.card-title {
+    color: white;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 50px;
+    flex-grow: 1;
+    position: relative;
+    height: 100%;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px;
+    background-color: black;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    padding-bottom: 1rem;
+}
+
+.card-footer .btn {
+    align-self: flex-end;
+}
+
+.card-text.published {
+    color: rgb(144, 144, 144);
+    margin-top: 5px;
+}
+
+.source {
+    align-self: end;
+    color: rgb(215, 215, 30);
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+}
+
+.head{
+    color: rgb(215, 215, 30);
+}
+
+.descr{
+    color: white;
+}
+
+/* Additional Utility Classes */
+#footer {
+    background-color: black;
+    overflow: hidden;
+    width: 95vw;
+    margin: auto;
+    border-radius: 1vw;
+    padding: 20px 0;
+}
+
+#fot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#fot h4 {
+    font-size: 30px;
+    color: white;
+    margin-top: 4vh;
+}
+
+#fot p {
+    font-size: 20px;
+    color: yellow;
+    font-family: "LXGW WenKai TC", cursive;
+    font-weight: 400;
+}
+
+#icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+#icons i {
+    margin-left: 2vw;
+    font-size: 2vw;
+    position: relative;
+    z-index: 1;
+}
+
+.bi-facebook {
+    color: #1877F2;
+}
+
+.bi-instagram {
+    background: linear-gradient(45deg, #833AB4, #FD1D1D, #FCB045);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.bi-linkedin {
+    color: #0773ff;
+}
+
+.bi-github, .bi-twitter-x {
+    color: white;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 1441px) {
+    #bground {
+        max-height: 90vh;
+    }
+    #dtitle h4 {
+        font-size: 50px;
+    }
+}
+
+@media (max-width: 1200px) {
+    #bground {
+        max-height: 90vh;
+    }
+    #dtitle h4 {
+        font-size: 45px;
+    }
+}
+
+@media (max-width: 1024px) {
+    #bground {
+        max-height: 90vh;
+    }
+    #dtitle h4 {
+        font-size: 40px;
+    }
+    #play button {
+        font-size: 1.5vw;
+        height: 90%;
+    }
+    .imdb-sticker {
+        width: 5vw;
+    }
+    #rating {
+        font-size: 1.8vw;
+    }
+    #rating i {
+        font-size: 1.8vw;
+    }
+}
+
+@media (max-width: 900px) {
+    #bground {
+        max-height: 90vh;
+    }
+    #dtitle h4 {
+        font-size: 36px;
+    }
+    #play button {
+        font-size: 0.8rem;
+        height: 85%;
+    }
+    #rating {
+        font-size: 1.9vw;
+    }
+    #rating i {
+        font-size: 1.9vw;
+    }
+}
+
+@media (max-width: 800px) {
+    #bground {
+        max-height: 90vh;
+    }
+    #dtitle h4 {
+        font-size: 32px;
+    }
+}
+
+@media (max-width: 700px) {
+    #bground {
+        max-height: 90vh;
+    }
+    #dtitle h4 {
+        font-size: 25px;
+    }
+    #ovr {
+        font-size: 12px;
+    }
+    #genre {
+        font-size: 12px;
+    }
+    #play button {
+        font-size: 2vw;
+        height: 90%;
+    }
+    .imdb-sticker {
+        width: 6vw;
+    }
+    #rating {
+        font-size: 2vw;
+    }
+    #rating i {
+        font-size: 2vw;
+    }
+}
+
+@media (max-width: 600px) {
+    #bground {
+        height: 50vh;
+    }
+}

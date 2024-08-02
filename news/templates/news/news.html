@@ -1,0 +1,137 @@
+<!-- templates/home/your_template.html -->
+{% include "layout.html" %}
+{% load static %}
+{% load custom_filters %}
+
+
+{% block head %}
+<title>News</title>
+<link rel="stylesheet" href="{% static "news/news.css" %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lobster&family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5/6MBzMl6E61uUjOLt7QsUe10t7j6gDC/e4gxC5X" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<!-- owl carousel -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+{% endblock %}
+
+{% block body %}
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container-fluid">
+    <div class="navbar-brand">#Flix</div>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item ms-4">
+          <a class="nav-link nav-link-underline" href="{% url 'homepage'%}">Home</a>
+        </li>
+        <li class="nav-item ms-4">
+          <a class="nav-link nav-link-underline" href="{% url 'movie-page'%}">Movies</a>
+        </li>
+        <li class="nav-item ms-4">
+          <a class="nav-link nav-link-underline" href="{% url 'tvshows-page'%}">Tv Shows</a>
+        </li>
+        <li class="nav-item ms-4">
+          <a class="nav-link nav-link-underline active disabled">News</a>
+        </li>
+      </ul>
+      <form class="d-flex me-5" role="search" action="{% url 'search' %}" method="GET">
+        <input class="form-control searchf" type="search" placeholder="Search Movies" aria-label="Search" name="query">
+        <button class="btn btn-warning search" type="submit"><i class="bi bi-search"></i></button>
+      </form>
+      <li class="nav-item dropstart me-2 d-flex align-items-center">
+        <a class="nav-link dropdown-toggle dropdown-toggle-white d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-person-fill"></i>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Watchlist</a></li>
+          <li><a class="dropdown-item" href="#">Settings</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#">Logout</a></li>
+        </ul>
+      </li>
+    </div>
+  </div>
+</nav>
+
+<section id="articles" class="container">
+  <h4 id="cat_head">Top Entertainment News</h4>
+  {% for i in articles %}
+  {% if i.urlToImage %}
+  <div class="card mb-3" style="max-height: 400px; overflow: hidden;">
+    <div class="row g-0 h-100">
+        <div class="col-md-4">
+            <img src="{{ i.urlToImage }}" class="img-fluid rounded-start h-100" alt="...">
+        </div>
+        <div class="col-md-8 d-flex flex-column">
+            <div class="card-body flex-grow-1 d-flex flex-column justify-content-between">
+                <div>
+                    <h5 class="card-title">{{ i.title }}</h5>
+                    <p class="card-text published">Published on {{ i.publishedAt|published }}</p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <p class="source">{{ i.source.name }}</p>
+                <a href="{{ i.url }}" class="btn btn-warning">Read more</a>
+            </div>
+        </div>
+    </div>
+  </div>
+  {% endif %}
+  {% endfor %}
+</section>
+
+
+<section id="sources" class="container">
+  <h4 id="cat_head">Top Sources</h4>
+  <div class="row">
+    {% for i in sources %}
+      <div class="col-12 col-md-4 mb-3 d-flex">
+        <div class="card flex-fill">
+          <h5 class="card-header head">{{i.name}}</h5>
+          <div class="card-body">
+            <p class="card-text descr">{{i.description}}</p>
+          </div>
+          <div class="card-footer mt-auto sfoot">
+            <a href="{{i.url}}" class="btn btn-warning">Visit Site</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+
+<div id="footer" class="row">
+    <div class="col-12" id="fot">
+      <hr>
+      <h4>Connect with me?</h4>
+      <p>@Chetan Ravipati</p>
+      <div id="icons">
+        <a href="#"><i class="bi bi-facebook"></i></a>
+        <a href="#"><i class="bi bi-instagram"></i></a>
+        <a href="#"><i class="bi bi-linkedin"></i></a>
+        <a href="#"><i class="bi bi-twitter-x"></i></a>
+        <a href="#"><i class="bi bi-github"></i></a>
+      </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5/6MBzMl6E61uUjOLt7QsUe10t7j6gDC/e4gxC5X" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.0/lazysizes.min.js" async></script>
+<script src="{% static "news/news.js" %}"></script>
+
+
+
+{% endblock %}
