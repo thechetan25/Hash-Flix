@@ -20,4 +20,4 @@ RUN pip install -r requirements.txt
 COPY . /app
 
 # Entry point for Gunicorn, using the PORT environment variable
-CMD ["gunicorn", "flix.wsgi", "-b", "0.0.0.0:${PORT}"]
+CMD ["gunicorn", "flix.wsgi", "-b", "0.0.0.0:10000"]
