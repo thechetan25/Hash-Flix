@@ -1,17 +1,17 @@
 FROM python:3.11.4-slim-bullseye
-
 WORKDIR /app
 
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
 
-RUN apt-get update && apt-get install -y \
-    libpq-dev gcc
+# install system dependencies
+RUN apt-get update
 
+# install dependencies
 RUN pip install --upgrade pip
 COPY ./requirements.txt /app/
 RUN pip install -r requirements.txt
 
 COPY . /app
 
-CMD exec gunicorn flix.wsgi -b 0.0.0.0:${PORT} --log-level debug --timeout 120
+ENTRYPOINT [ "gunicorn", "core.wsgi", "-b", "0.0.0.0:8000"]
