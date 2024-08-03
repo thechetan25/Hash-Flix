@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 
 COPY . /app
 
-CMD exec gunicorn flix.wsgi -b 0.0.0.0:${PORT} --log-level debug
+CMD exec gunicorn flix.wsgi -b 0.0.0.0:${PORT} --log-level debug --timeout 120
