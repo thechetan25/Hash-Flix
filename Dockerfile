@@ -18,7 +18,7 @@ COPY . /app
 RUN python manage.py collectstatic --noinput
 
 # Expose port
-EXPOSE 80
+EXPOSE 8000
 
 # Run Gunicorn server
-ENTRYPOINT ["gunicorn", "flix.wsgi:application", "-b", "0.0.0.0:80"]
+ENTRYPOINT ["gunicorn", "flix.wsgi:application", "-b", "0.0.0.0:8000"]
