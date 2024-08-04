@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 
 COPY . /app
 
-ENTRYPOINT [ "gunicorn", "core.wsgi", "-b", "0.0.0.0:80"]
+ENTRYPOINT [ "gunicorn", "flix.wsgi", "-b", "0.0.0.0:80"]
