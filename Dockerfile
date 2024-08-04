@@ -14,4 +14,11 @@ RUN pip install -r requirements.txt
 
 COPY . /app
 
-ENTRYPOINT [ "gunicorn", "flix.wsgi", "-b", "0.0.0.0:80"]
+# Collect static files
+RUN python manage.py collectstatic --noinput
+
+# Expose port
+EXPOSE 80
+
+# Run Gunicorn server
+ENTRYPOINT ["gunicorn", "flix.wsgi:application", "-b", "0.0.0.0:80"]
