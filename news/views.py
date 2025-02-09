@@ -9,13 +9,13 @@ newsapi = NewsApiClient(api_key='7088c9efde1441038307dae2e83c8a46')
 
 def homepage(request):
     top_headlines = newsapi.get_top_headlines(
-        category='sports',
+        category='entertainment',
         language='en',
         country='in'
     ) 
 
 
-    sources = newsapi.get_sources(category='sports')
+    sources = newsapi.get_sources(category='entertainment')
 
     print(top_headlines['totalResults'])
     context = {
